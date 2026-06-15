@@ -1,0 +1,221 @@
+/**
+ * @vitest-environment jsdom
+ */
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import GridfinityCalculator from './GridfinityCalculator';
+import { SettingsProvider } from '../contexts/SettingsContext';
+import { saveUserSettings, loadUserSettings } from '../lib/utils';
+import type { Settings } from '@/types/gridfinity';
+import type { ReactElement } from 'react';
+
+// Mock the utils
+vi.mock('../lib/utils', () => ({
+  cn: vi.fn((inputs) => inputs),
+  printerSizes: {
+    'Test Printer': { x: 200, y: 200, z: 200 },
+    'Bambu Lab A1': { x: 220, y: 220, z: 250 },
+  },
+  saveUserSettings: vi.fn(),
+  loadUserSettings: vi.fn(),
+}));
+
+// Helper function to render with providers
+const renderWithProviders = (component: ReactElement) => {
+  return render(
+    <SettingsProvider>
+      {component}
+    </SettingsProvider>
+  );
+};
+
+describe('GridfinityCalculator', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.mocked(loadUserSettings).mockReturnValue(null);
+  });
+
+  it('should render all main sections', () => {
+    renderWithProviders(<GridfinityCalculator />);
+    
+    expect(screen.getByText('Skadis Layout Dimensions')).toBeInTheDocument();
+    expect(screen.getByText('Printer Settings')).toBeInTheDocument();
+    expect(screen.getByText('Board Options')).toBeInTheDocument();
+    expect(screen.getByText('Layout Options')).toBeInTheDocument();
+    expect(screen.getByText('Print profile')).toBeInTheDocument();
+  });
+
+  it('should load saved settings on mount', () => {
+    const savedSettings: Partial<Settings> = {
+      drawerSize: { width: 15, height: 12 },
+      selectedPrinter: 'Test Printer',
+      printProfile: 'default',
+      useHalfSize: true,
+      preferHalfSize: false,
+      numDrawers: 3,
+      useMm: true,
+    };
+    
+    vi.mocked(loadUserSettings).mockReturnValue(savedSettings);
+    renderWithProviders(<GridfinityCalculator />);
+    
+    expect(loadUserSettings).toHaveBeenCalled();
+  });
+
+  it('should save settings when values change', async () => {
+    renderWithProviders(<GridfinityCalculator />);
+    
+    // Wait for initial render and save
+    await waitFor(() => {
+      expect(saveUserSettings).toHaveBeenCalled();
+    });
+    
+    const initialCallCount = vi.mocked(saveUserSettings).mock.calls.length;
+    
+    // Change drawer width
+    const widthInput = screen.getByLabelText(/width/i);
+    await userEvent.clear(widthInput);
+    await userEvent.type(widthInput, '20');
+    
+    // Trigger blur to save the value
+    await userEvent.tab();
+    
+    await waitFor(() => {
+      expect(vi.mocked(saveUserSettings).mock.calls.length).toBeGreaterThan(initialCallCount);
+    });
+  });
+
+  it('should display results when calculation completes', async () => {
+    renderWithProviders(<GridfinityCalculator />);
+    
+    await waitFor(() => {
+      expect(screen.getByText(/Results for \d+ layout/)).toBeInTheDocument();
+      expect(screen.getByText('Visual Preview')).toBeInTheDocument();
+    });
+  });
+
+  it('should toggle between inches and millimeters', async () => {
+    renderWithProviders(<GridfinityCalculator />);
+    
+    // Get the unit toggle switch by its ID
+    const unitToggle = document.getElementById('unit-toggle');
+    
+    // Initially should show inches label
+    const inchesLabel = screen.getByText('Inches');
+    expect(inchesLabel).toBeInTheDocument();
+    
+    // Toggle to mm
+    if (unitToggle) {
+      await userEvent.click(unitToggle);
+    }
+    
+    await waitFor(() => {
+      // After toggling, the width/height labels should show mm
+      expect(screen.getByText(/Layout Width \(mm\)/)).toBeInTheDocument();
+    });
+  });
+
+  it('should update printer selection', async () => {
+    renderWithProviders(<GridfinityCalculator />);
+    
+    // Open printer dropdown
+    const printerButton = screen.getByRole('combobox', { name: 'Printer Model' });
+    await userEvent.click(printerButton);
+    
+    // Select a different printer
+    const testPrinter = await screen.findByText('Test Printer');
+    await userEvent.click(testPrinter);
+    
+    await waitFor(() => {
+      const calls = vi.mocked(saveUserSettings).mock.calls;
+      const hasTestPrinter = calls.some((call) => 
+        call[0]?.selectedPrinter === 'Test Printer'
+      );
+      expect(hasTestPrinter).toBe(true);
+    });
+  });
+
+  it('should handle half-size bin options', async () => {
+    renderWithProviders(<GridfinityCalculator />);
+    
+    const halfSizeCheckbox = screen.getByLabelText('Use only half-size pieces (20x20mm)');
+    
+    await userEvent.click(halfSizeCheckbox);
+    
+    await waitFor(() => {
+      const calls = vi.mocked(saveUserSettings).mock.calls;
+      const hasHalfSize = calls.some((call) => 
+        call[0]?.useHalfSize === true
+      );
+      expect(hasHalfSize).toBe(true);
+    });
+  });
+
+  it('should update number of drawers', async () => {
+    renderWithProviders(<GridfinityCalculator />);
+    
+    // Find the input with the numDrawers id
+    const drawerInput = document.getElementById('numDrawers');
+    if (drawerInput) {
+      await userEvent.clear(drawerInput);
+      await userEvent.type(drawerInput, '5');
+    }
+    
+    await waitFor(() => {
+      const calls = vi.mocked(saveUserSettings).mock.calls;
+      const hasFiveDrawers = calls.some((call) => 
+        call[0]?.numDrawers === 5
+      );
+      expect(hasFiveDrawers).toBe(true);
+    });
+  });
+
+  it('should update print profile', async () => {
+    renderWithProviders(<GridfinityCalculator />);
+
+    const profileButton = screen.getByRole('combobox', { name: 'Print Profile' });
+    await userEvent.click(profileButton);
+
+    const au3dProfile = await screen.findByText('AU3D');
+    await userEvent.click(au3dProfile);
+
+    await waitFor(() => {
+      const calls = vi.mocked(saveUserSettings).mock.calls;
+      const hasAu3dProfile = calls.some((call) =>
+        call[0]?.printProfile === 'au3d'
+      );
+      expect(hasAu3dProfile).toBe(true);
+    });
+  });
+
+  it('should handle invalid drawer dimensions gracefully', async () => {
+    renderWithProviders(<GridfinityCalculator />);
+    
+    const widthInput = screen.getByLabelText(/width/i);
+    await userEvent.clear(widthInput);
+    await userEvent.type(widthInput, '0');
+    
+    // Should still render without crashing
+    expect(screen.getByText('Skadis Layout Dimensions')).toBeInTheDocument();
+  });
+
+  it('should recalculate when dimensions change', async () => {
+    renderWithProviders(<GridfinityCalculator />);
+    
+    const initialSaveCount = vi.mocked(saveUserSettings).mock.calls.length;
+    
+    const heightInput = screen.getByLabelText(/height/i);
+    await userEvent.clear(heightInput);
+    await userEvent.type(heightInput, '25');
+    
+    // Trigger blur to save the value
+    await userEvent.tab();
+    
+    await waitFor(() => {
+      expect(vi.mocked(saveUserSettings).mock.calls.length).toBeGreaterThan(initialSaveCount);
+      const lastCall = vi.mocked(saveUserSettings).mock.calls[vi.mocked(saveUserSettings).mock.calls.length - 1][0];
+      expect(lastCall.drawerSize.height).toBe(25);
+    });
+  });
+});

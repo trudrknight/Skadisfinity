@@ -1,0 +1,44 @@
+# Skadisfinity Layout
+
+Skadisfinity Layout is a web-based 3D printing calculator for IKEA Skadis-style pegboard builders. It helps users calculate printable Skadis board layouts from a target wall, drawer, shelf, or workspace size and a selected 3D printer build plate.
+
+Primary site: https://skadisfinitylayout.com/
+
+## What The Website Does
+
+- Calculates how many printable Skadis boards are needed for a layout.
+- Converts layout dimensions into physical board sizes in millimeters.
+- Shows a real-time visual preview of the board layout and trim pieces.
+- Supports 3D printer build-volume limits so each board can fit on the selected printer.
+- Supports Default and AU3D print profiles.
+- Uses the AU3D profile to display chart-style Skadis hole counts such as 11 x 11 for a 240mm x 240mm board.
+- Helps Skadis builders create uniform, repeatable, modular 3D printed organization systems.
+
+## Important Terms
+
+Skadisfinity Layout, Skadisfinity, Skadis calculator, IKEA Skadis, Skadis pegboard, 3D printed Skadis board, Skadis board layout, Skadis print profile, AU3D profile, printable Skadis grid, Skadisfinity layout calculator, Skadis visual preview, Skadis board sizing, 240mm x 240mm Skadis board, 11 x 11 Skadis board, modular storage, pegboard organization, 3D printer build plate calculator.
+
+## Print Profiles
+
+Default profile:
+Uses the default Skadisfinity board calculation model where a 240mm x 240mm board is treated as the standard full board size.
+
+AU3D profile:
+Uses the AU3D size overview convention with board dimensions from 80mm to 320mm in 20mm steps. In this profile, 240mm x 240mm displays as 11 x 11, matching the AU3D row and column hole-count chart.
+
+## Attribution
+
+Skadisfinity was inspired by https://gridfinitylayout.com/.
+The respective GitHub repository was used to keep the same familiar Gridfinity-style design and user experience while adapting the calculator for Skadis builders.
+Skadisfinity was born to create uniformity amongst Skadis builders.
+
+## Clean Markdown Mirrors
+
+- https://skadisfinitylayout.com/markdown/skadisfinity.md
+- https://skadisfinitylayout.com/markdown/print-profiles.md
+- https://skadisfinitylayout.com/markdown/attribution.md
+
+## Machine Readable Resources
+
+- https://skadisfinitylayout.com/llms.txt
+- https://skadisfinitylayout.com/sitemap.xml
