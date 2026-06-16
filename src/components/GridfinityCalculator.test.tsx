@@ -136,20 +136,11 @@ describe('GridfinityCalculator', () => {
     });
   });
 
-  it('should handle half-size bin options', async () => {
+  it('should hide half-size bin options', async () => {
     renderWithProviders(<GridfinityCalculator />);
-    
-    const halfSizeCheckbox = screen.getByLabelText('Use only half-size pieces (20x20mm)');
-    
-    await userEvent.click(halfSizeCheckbox);
-    
-    await waitFor(() => {
-      const calls = vi.mocked(saveUserSettings).mock.calls;
-      const hasHalfSize = calls.some((call) => 
-        call[0]?.useHalfSize === true
-      );
-      expect(hasHalfSize).toBe(true);
-    });
+
+    expect(screen.queryByLabelText('Use only half-size pieces (20x20mm)')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Prefer half-size pieces for trim')).not.toBeInTheDocument();
   });
 
   it('should update number of drawers', async () => {

@@ -24,8 +24,8 @@ const GridfinityCalculator: React.FC = () => {
     selectedPrinter: settings.selectedPrinter,
     customPrinterSize: settings.customPrinterSize,
     printProfile: settings.printProfile,
-    useHalfSize: settings.useHalfSize,
-    preferHalfSize: settings.preferHalfSize,
+    useHalfSize: false,
+    preferHalfSize: false,
     preferUniformBaseplates: settings.preferUniformBaseplates,
     numDrawers: settings.numDrawers,
   });
@@ -52,8 +52,8 @@ const GridfinityCalculator: React.FC = () => {
       drawerSize: settings.drawerSize,
       selectedPrinter: settings.selectedPrinter,
       printProfile: settings.printProfile,
-      useHalfSize: settings.useHalfSize,
-      preferHalfSize: settings.preferHalfSize,
+      useHalfSize: false,
+      preferHalfSize: false,
       numDrawers: settings.numDrawers,
       useMm: settings.useMm,
     });
@@ -103,10 +103,6 @@ const GridfinityCalculator: React.FC = () => {
         <Card>
           <CardContent>
             <BinOptions
-              useHalfSize={settings.useHalfSize}
-              setUseHalfSize={settings.setUseHalfSize}
-              preferHalfSize={settings.preferHalfSize}
-              setPreferHalfSize={settings.setPreferHalfSize}
               preferUniformBaseplates={settings.preferUniformBaseplates}
               setPreferUniformBaseplates={settings.setPreferUniformBaseplates}
             />
@@ -130,8 +126,8 @@ const GridfinityCalculator: React.FC = () => {
           <GridfinityResults
             result={result}
             useMm={settings.useMm}
-            useHalfSize={settings.useHalfSize}
-            preferHalfSize={settings.preferHalfSize}
+            useHalfSize={false}
+            preferHalfSize={false}
             printProfile={settings.printProfile}
           />
           {layout && layout.length > 0 && (

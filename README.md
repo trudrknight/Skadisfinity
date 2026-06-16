@@ -97,6 +97,16 @@ or
 yarn build
 ```
 
+### Cloudflare Web Analytics
+
+Set the Cloudflare Web Analytics token in your deployment environment:
+
+```bash
+VITE_CLOUDFLARE_ANALYTICS_TOKEN=your_cloudflare_token_here
+```
+
+Do not commit the real token. Use `.env.example` as the safe template for local or hosted environment setup.
+
 ## CI/CD
 
 This project uses GitHub Actions for continuous integration and deployment:
@@ -112,7 +122,7 @@ This project uses GitHub Actions for continuous integration and deployment:
   - Code quality metrics
   - Automated PR comments with status
 
-- **Deployment**: Automatic deployment to GitHub Pages on main branch
+- **Deployment**: Cloudflare Pages deployment from the protected `master` branch
 
 - **Security**: 
   - CodeQL semantic analysis for JavaScript/TypeScript

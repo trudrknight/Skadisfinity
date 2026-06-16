@@ -60,14 +60,19 @@ describe('gridfinityUtils', () => {
       })
     })
 
-    it('should calculate AU3D layouts using 20mm chart increments', () => {
-      const drawerSize: DrawerSize = { width: 22.5, height: 16.5 }
+    it('should let AU3D use 20mm board increments to reduce spacer waste', () => {
+      const drawerSize: DrawerSize = { width: 22.875, height: 16.5 }
       const printerSize: PrinterSize = { x: 256, y: 256, z: 256 }
 
+      const defaultResult = calculateGrids(drawerSize, printerSize, false, false)
       const result = calculateGrids(drawerSize, printerSize, false, false, false, 'au3d')
 
-      expect(result.baseplates['12x12']).toBeGreaterThan(0)
+      expect(defaultResult.baseplates['2x6']).toBe(1)
+      expect(defaultResult.spacers['21.2mm x 240mm']).toBe(1)
+      expect(result.baseplates['5x12']).toBe(1)
+      expect(result.spacers['1.03mm x 240mm']).toBe(1)
       expect(getAu3dHoleCount(240)).toBe(11)
+      expect(getAu3dHoleCount(100)).toBe(4)
       result.layout.forEach(item => {
         if (item.type === 'baseplate') {
           expect(item.pixelWidth).toBeLessThanOrEqual(240)

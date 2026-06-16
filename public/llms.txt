@@ -11,7 +11,7 @@ Primary site: https://skadisfinitylayout.com/
 - Shows a real-time visual preview of the board layout and trim pieces.
 - Supports 3D printer build-volume limits so each board can fit on the selected printer.
 - Supports Default and AU3D print profiles.
-- Uses the AU3D profile to display chart-style Skadis hole counts such as 11 x 11 for a 240mm x 240mm board.
+- Uses the AU3D profile to calculate board pieces in 20mm AU3D table increments when that reduces trim, then displays chart-style Skadis hole counts such as 11 x 11 for a 240mm x 240mm board.
 - Helps Skadis builders create uniform, repeatable, modular 3D printed organization systems.
 
 ## Important Terms
@@ -24,7 +24,7 @@ Default profile:
 Uses the default Skadisfinity board calculation model where a 240mm x 240mm board is treated as the standard full board size.
 
 AU3D profile:
-Uses the AU3D size overview convention with board dimensions from 80mm to 320mm in 20mm steps. In this profile, 240mm x 240mm displays as 11 x 11, matching the AU3D row and column hole-count chart.
+Uses the AU3D size overview convention with board dimensions in 20mm steps. It can choose pieces such as 100mm x 240mm when that fills more of the requested layout than the Default profile, and displays 240mm x 240mm as 11 x 11, matching the AU3D row and column hole-count chart.
 
 ## Attribution
 
