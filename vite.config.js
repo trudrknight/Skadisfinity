@@ -19,15 +19,6 @@ export default defineConfig({
     },
   },
   build: {
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'ui-vendor': ['@radix-ui/react-dialog', '@radix-ui/react-select', '@radix-ui/react-label', '@radix-ui/react-slot'],
-          'math-vendor': ['mathjs'],
-        }
-      }
-    },
     sourcemap: true,
     minify: 'terser',
     terserOptions: {
