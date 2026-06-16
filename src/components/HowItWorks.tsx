@@ -10,7 +10,8 @@ const HowItWorks = () => {
     {
       step: 2,
       title: "Customize Settings",
-      description: "Adjust options for boards and trim pieces",
+      description:
+        "Adjust options for boards and trim pieces. Select your print profile. Skadis Creator - Default is standard Skadis in mm.",
     },
     {
       step: 3,

@@ -362,10 +362,6 @@ const findDivisions = (length: number, maxSize: number, minSize: number = 2): nu
   return divisions;
 };
 
-/**
- * Greedy division used by AU3D so the layout prefers the largest printable board first
- * while avoiding final pieces smaller than the AU3D size table allows.
- */
 const calculateGreedyDivisions = (
   length: number,
   maxSize: number,
