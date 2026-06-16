@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Github, Heart, FileText } from "lucide-react";
+import { Github, FileText } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -24,17 +24,6 @@ const Footer = () => {
           >
             <Github className="mr-2 h-5 w-5" />
             GitHub
-          </Button>
-          <Button
-            variant="secondary"
-            size="lg"
-            className="text-lg px-6 py-4 w-full sm:w-auto"
-            onClick={() =>
-              window.open("https://github.com/sponsors/ntindle", "_blank")
-            }
-          >
-            <Heart className="mr-2 h-5 w-5" />
-            Donate
           </Button>
           <Button
             variant="secondary"
