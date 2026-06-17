@@ -107,6 +107,25 @@ VITE_CLOUDFLARE_ANALYTICS_TOKEN=your_cloudflare_token_here
 
 Do not commit the real token. Use `.env.example` as the safe template for local or hosted environment setup.
 
+### AdSense Ad Slot
+
+Skadisfinity includes one optional responsive ad slot beneath the visual preview and above the footer. It stays hidden in production until AdSense values are configured.
+
+Set these values in your deployment environment after AdSense approval:
+
+```bash
+VITE_ADSENSE_CLIENT=ca-pub-yourpublisheridhere
+VITE_ADSENSE_SLOT=your_ad_slot_id_here
+```
+
+For local visual testing, set:
+
+```bash
+VITE_ADSENSE_PLACEHOLDER=true
+```
+
+Do not commit real AdSense values. They are public when rendered in the browser, but environment variables keep deployment setup cleaner and avoid accidental placeholder IDs in source.
+
 ## CI/CD
 
 This project uses GitHub Actions for continuous integration and deployment:
