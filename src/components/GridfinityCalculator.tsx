@@ -6,6 +6,7 @@ import BinOptions from "./GridfinityCalculator/BinOptions";
 import DrawerOptions from "./GridfinityCalculator/DrawerOptions";
 import GridfinityResults from "./GridfinityResults";
 import GridfinityVisualPreview from "./GridfinityVisualPreview";
+import AdSlot from "./AdSlot";
 import { useSettings } from "@/contexts/SettingsContext";
 import { useGridfinityCalculation } from "@/hooks/useGridfinityCalculation";
 import { useLegacyMigration } from "@/hooks/useLegacyMigration";
@@ -131,12 +132,15 @@ const GridfinityCalculator: React.FC = () => {
             printProfile={settings.printProfile}
           />
           {layout && layout.length > 0 && (
-            <GridfinityVisualPreview
-              layout={layout}
-              drawerSize={settings.drawerSize}
-              useMm={settings.useMm}
-              printProfile={settings.printProfile}
-            />
+            <>
+              <GridfinityVisualPreview
+                layout={layout}
+                drawerSize={settings.drawerSize}
+                useMm={settings.useMm}
+                printProfile={settings.printProfile}
+              />
+              <AdSlot />
+            </>
           )}
         </>
       )}
