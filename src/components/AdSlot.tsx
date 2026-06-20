@@ -20,7 +20,7 @@ const AdSlot: React.FC<AdSlotProps> = ({ className = "" }) => {
   const canRenderAd = Boolean(ADSENSE_CLIENT && ADSENSE_SLOT);
 
   useEffect(() => {
-    if (!canRenderAd) return;
+    if (!ADSENSE_CLIENT) return;
 
     const scriptId = "adsense-script";
     if (!document.getElementById(scriptId)) {
@@ -31,6 +31,8 @@ const AdSlot: React.FC<AdSlotProps> = ({ className = "" }) => {
       script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`;
       document.head.appendChild(script);
     }
+
+    if (!canRenderAd) return;
 
     window.adsbygoogle = window.adsbygoogle || [];
     window.adsbygoogle.push({});
